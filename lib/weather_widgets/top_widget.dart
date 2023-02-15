@@ -43,7 +43,7 @@ class TopWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GradientText(
-                    '27°',
+                    '28°',
                     style: const TextStyle(
                       fontSize: 72,
                       fontWeight: FontWeight.bold,
