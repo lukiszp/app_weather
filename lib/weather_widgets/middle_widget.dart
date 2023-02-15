@@ -23,24 +23,62 @@ class MiddleWidget extends StatelessWidget {
         ],
       ),
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      padding: const EdgeInsets.all(32),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.fromLTRB(25, 16, 25, 32),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               Text(
-                'Weather details',
+                'Szczegóły',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Icon(Icons.refresh),
             ],
           ),
-          const SizedBox(height: 10),
-          const DetailBox1(),
           const SizedBox(height: 20),
-          const DetailBox1(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DetailWidget(
+                widgetIcon: Icons.wind_power,
+                text1: 'Wiatr',
+                text2: '25 km/h',
+              ),
+              DetailWidget(
+                widgetIcon: Icons.thermostat,
+                text1: 'Odczuwalne',
+                text2: '31°',
+              ),
+              DetailWidget(
+                widgetIcon: Icons.terrain,
+                text1: 'Ciśnienie',
+                text2: '1027 hPa',
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DetailWidget(
+                widgetIcon: Icons.home,
+                text1: 'Widoczność',
+                text2: '11 km',
+              ),
+              DetailWidget(
+                widgetIcon: Icons.sunny,
+                text1: 'Indeks UV',
+                text2: 'Małe, 0',
+              ),
+              DetailWidget(
+                widgetIcon: Icons.water,
+                text1: 'Wilgotność',
+                text2: '80 %',
+              ),
+            ],
+          ),
         ],
       ),
     );

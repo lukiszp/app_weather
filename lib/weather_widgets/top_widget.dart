@@ -92,17 +92,18 @@ class TopWidget extends StatelessWidget {
           ),
         ),
         Positioned.fill(
-            left: 32,
-            top: -32,
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(
-                width: 200,
-                height: 250,
-                child: Image.network(
-                    'https://freepngimg.com/thumb/categories/2275.png'),
-              ),
-            ))
+          left: 32,
+          top: -32,
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 200,
+              height: 250,
+              child: Image.network(
+                  'https://freepngimg.com/thumb/categories/2275.png'),
+            ),
+          ),
+        ),
       ],
     );
   }
