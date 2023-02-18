@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:weather/weather.dart';
 
 class TopWidget extends StatelessWidget {
-  const TopWidget({
+  TopWidget({
     super.key,
+    this.weather,
   });
+
+  Weather? weather;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,10 @@ class TopWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GradientText(
-                    '28°',
+                    // '28°',
+                    weather != null
+                        ? '${weather!.temperature.toString()[0]}${weather!.temperature.toString()[1]}${weather!.temperature.toString()[2]}°'
+                        : 'Loading',
                     style: const TextStyle(
                       fontSize: 72,
                       fontWeight: FontWeight.bold,
@@ -63,18 +70,22 @@ class TopWidget extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Reda',
-                        style: TextStyle(
+                        // 'Reda',
+                        weather != null
+                            ? weather!.areaName.toString()
+                            : 'Loading',
+                        style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        'Sobota, 11/02/23',
-                        style: TextStyle(
+                        // 'Sobota, 11/02/23',
+                        weather != null ? weather!.date.toString() : 'Loading',
+                        style: const TextStyle(
                             fontSize: 16,
                             // fontWeight: FontWeight.bold,
                             color: Colors.white),

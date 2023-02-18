@@ -82,7 +82,7 @@ class WeatherFutureTommorow extends StatelessWidget {
         ],
       ),
       width: 70,
-      height: 190,
+      height: 220,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
       // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
@@ -128,6 +128,7 @@ class WeatherFutureTommorow extends StatelessWidget {
   }
 }
 
+// Dq8%voD-5b
 class WeatherFutureOtherDays extends StatelessWidget {
   WeatherFutureOtherDays(
       {super.key,
@@ -147,7 +148,7 @@ class WeatherFutureOtherDays extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 70,
-      height: 190,
+      height: 220,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -179,16 +180,6 @@ class WeatherFutureOtherDays extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     borderRadius: const BorderRadius.all(Radius.circular(5)),
-          //     color: indexColor,
-          //   ),
-          //   child: const SizedBox(
-          //     width: 35,
-          //     height: 20,
-          //   ),
-          // ),
         ],
       ),
     );

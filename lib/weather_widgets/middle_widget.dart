@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:weather/weather_detail_widgets/weather_detail_widgets.dart';
+import 'package:weather/weather.dart';
+import 'package:weather_app/weather_detail_widgets/weather_detail_widgets.dart';
 
 class MiddleWidget extends StatelessWidget {
-  const MiddleWidget({
-    super.key,
-  });
-
+  MiddleWidget({super.key, this.weather});
+  Weather? weather;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,17 +42,24 @@ class MiddleWidget extends StatelessWidget {
               DetailWidget(
                 widgetIcon: Icons.wind_power,
                 text1: 'Wiatr',
-                text2: '25 km/h',
+                // text2: '25 km/h',
+                text2:
+                    weather != null ? '${weather!.windSpeed} m/s' : 'Loading',
               ),
               DetailWidget(
                 widgetIcon: Icons.thermostat,
                 text1: 'Odczuwalne',
-                text2: '31°',
+                // text2: '31°',
+                text2: weather != null
+                    ? '${weather!.tempFeelsLike.toString()[0]}${weather!.tempFeelsLike.toString()[1]}${weather!.tempFeelsLike.toString()[2]} °'
+                    : 'Loading',
               ),
               DetailWidget(
                 widgetIcon: Icons.terrain,
                 text1: 'Ciśnienie',
-                text2: '1027 hPa',
+                // text2: '1027 hPa',
+                text2:
+                    weather != null ? weather!.pressure.toString() : 'Loading',
               ),
             ],
           ),
@@ -63,19 +68,25 @@ class MiddleWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               DetailWidget(
-                widgetIcon: Icons.home,
-                text1: 'Widoczność',
-                text2: '11 km',
+                widgetIcon: Icons.thermostat,
+                text1: 'Temp min',
+                // text2: '11 km',
+                text2: weather != null
+                    ? '${weather!.tempMin.toString()[0]}${weather!.tempMin.toString()[1]}${weather!.tempMin.toString()[2]} °'
+                    : 'Loading',
               ),
               DetailWidget(
-                widgetIcon: Icons.sunny,
-                text1: 'Indeks UV',
-                text2: 'Małe, 0',
+                widgetIcon: Icons.water_drop,
+                text1: 'Deszcz 1h',
+                // text2: 'Małe, 0',
+                text2:
+                    weather != null ? '${weather!.rainLastHour} mm' : 'Loading',
               ),
               DetailWidget(
                 widgetIcon: Icons.water,
                 text1: 'Wilgotność',
-                text2: '80 %',
+                // text2: '80 %',
+                text2: weather != null ? '${weather!.humidity} %' : 'Loading',
               ),
             ],
           ),
