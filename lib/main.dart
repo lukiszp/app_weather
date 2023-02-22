@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+// import 'package:weather_app/weather_widgets/search_bar.dart';
 
 import 'package:weather_app/weather_widgets/top_widget.dart';
 import 'package:weather_app/weather_widgets/middle_widget.dart';
 import 'package:weather_app/weather_widgets/bottom_widget.dart';
+
 import 'package:weather/weather.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,108 +34,79 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  WeatherFactory wf = WeatherFactory("3c6dcd53aca5a6a0a34ab6ffdb8699cd");
+  WeatherFactory wf = WeatherFactory("3c6dcd53aca5a6a0a34ab6ffdb8699cd",
+      language: Language.POLISH);
   Weather? weather;
+  bool locationType = false;
+
+  // void changeLocationType() {
+  //   setState(() {
+  //     locationType = !locationType;
+  //   });
+  // }
+
+  // String? newManualLocation;
+  String? manualLocation; // = SearchWeatherBar().manualLocation.toString();
+  var searchBarController = TextEditingController();
+  String? hintText; // = weather!.areaName.toString();
+
+  void refreshCity() async {
+    setState(() {
+      if (manualLocation != null) {
+        getWeatherByCityName();
+        // manualLocation = null;
+        searchBarController.clear();
+      }
+    });
+  }
+
+  void refreshLocation() async {
+    setState(() {
+      searchBarController.clear();
+      // weather = null;
+      manualLocation = null;
+      getWeatherByLocation();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    getWeather();
+    getWeatherByLocation();
+    // refresh();
   }
 
-  Future<void> getWeather() async {
-    Weather? newWeather = await wf.currentWeatherByCityName("Reda");
+  Future<void> getWeatherByCityName() async {
+    Weather? newWeather;
+
+    if (manualLocation != null && manualLocation != 'Loading') {
+      newWeather = await wf.currentWeatherByCityName(manualLocation!);
+    }
+
     setState(() {
       weather = newWeather;
+      hintText = weather!.areaName.toString();
     });
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         backgroundColor: Colors.lightBlue[200],
-//         body: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: <Widget>[
-//             const Padding(
-//               padding: EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 'Aktualna pogoda',
-//                 style: TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 30.0,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 weather != null ? weather!.weatherMain.toString() : 'Loading',
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 20.0,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 weather != null
-//                     ? '${weather!.temperature!.celsius}\u00B0'
-//                     : 'Loading',
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 80.0,
-//                   fontWeight: FontWeight.w200,
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 weather != null
-//                     ? weather!.weatherDescription.toString()
-//                     : 'Loading',
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 20.0,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 'Wilgotność: ${weather != null ? weather!.humidity.toString() : 'Loading'}',
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 18.0,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 10.0),
-//               child: Text(
-//                 'Prędkość wiatru: ${weather != null ? '${weather!.windSpeed} km/h' : 'Loading'}',
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontSize: 18.0,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  Future<void> getWeatherByLocation() async {
+    Weather? newWeather;
+
+    // if (manualLocation != null && manualLocation != 'Loading') {
+    //   newWeather = await wf.currentWeatherByCityName(manualLocation!);
+    // } else {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    newWeather = await wf.currentWeatherByLocation(
+        position.latitude, position.longitude);
+    // }
+
+    setState(() {
+      weather = newWeather;
+      hintText = weather!.areaName.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -151,16 +125,77 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
           child: Column(
             children: [
-              // SizedBox(
-              //   height: 0,
+              const SizedBox(
+                height: 0,
+              ),
+              // SearchWeatherBar(
+              //   weather: weather,
               // ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(4, 4), // changes position of shadow
+                    ),
+                  ],
+                ),
+                margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                // padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const Icon(Icons.search),
+                    SizedBox(
+                      height: 50,
+                      width: 220,
+                      // child: Placeholder(),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 0),
+                          // border: OutlineInputBorder(),
+                          border: InputBorder.none,
+                          hintText: hintText,
+                        ),
+                        controller: searchBarController,
+                        onChanged: (value) {
+                          manualLocation = value.toString();
+                        },
+                        onSubmitted: (value) {
+                          refreshCity();
+                        },
+                        onTap: () {
+                          setState(() {
+                            hintText = "Wpisz lokalizację";
+                          });
+                        },
+
+                        // onChanged: (value) => _handleTap,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: refreshLocation,
+                      // child: null,
+                      icon: const Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               TopWidget(
                 weather: weather,
               ),
               MiddleWidget(
                 weather: weather,
               ),
-              BottomWidget(),
+              const BottomWidget(),
             ],
           ),
         ),

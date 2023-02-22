@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:weather/weather.dart';
 
-class TopWidget extends StatelessWidget {
+class TopWidget extends StatefulWidget {
   TopWidget({
     super.key,
     this.weather,
@@ -10,6 +10,11 @@ class TopWidget extends StatelessWidget {
 
   Weather? weather;
 
+  @override
+  State<TopWidget> createState() => _TopWidgetState();
+}
+
+class _TopWidgetState extends State<TopWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -39,7 +44,7 @@ class TopWidget extends StatelessWidget {
           ),
           width: double.infinity,
           margin: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-          padding: const EdgeInsets.fromLTRB(32, 16, 32, 32),
+          padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -48,8 +53,8 @@ class TopWidget extends StatelessWidget {
                 children: [
                   GradientText(
                     // '28°',
-                    weather != null
-                        ? '${weather!.temperature.toString()[0]}${weather!.temperature.toString()[1]}${weather!.temperature.toString()[2]}°'
+                    widget.weather != null
+                        ? '${widget.weather!.temperature.toString()[0]}${widget.weather!.temperature.toString()[1]}${widget.weather!.temperature.toString()[2]}°'
                         : 'Loading',
                     style: const TextStyle(
                       fontSize: 72,
@@ -73,8 +78,8 @@ class TopWidget extends StatelessWidget {
                     children: [
                       Text(
                         // 'Reda',
-                        weather != null
-                            ? weather!.areaName.toString()
+                        widget.weather != null
+                            ? widget.weather!.areaName.toString()
                             : 'Loading',
                         style: const TextStyle(
                             fontSize: 24,
@@ -84,7 +89,9 @@ class TopWidget extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         // 'Sobota, 11/02/23',
-                        weather != null ? weather!.date.toString() : 'Loading',
+                        widget.weather != null
+                            ? widget.weather!.date.toString()
+                            : 'Loading',
                         style: const TextStyle(
                             fontSize: 16,
                             // fontWeight: FontWeight.bold,
