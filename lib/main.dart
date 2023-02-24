@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:weather_app/weather_widgets/search_bar.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:weather/weather.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:weather_app/weather_widgets/top_widget.dart';
 import 'package:weather_app/weather_widgets/middle_widget.dart';
 import 'package:weather_app/weather_widgets/bottom_widget.dart';
-
-import 'package:weather/weather.dart';
-import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +36,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   WeatherFactory wf = WeatherFactory("3c6dcd53aca5a6a0a34ab6ffdb8699cd",
       language: Language.POLISH);
   Weather? weather;
+  List<Weather>? forecast;
   bool locationType = false;
 
   // void changeLocationType() {
@@ -49,6 +49,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String? manualLocation; // = SearchWeatherBar().manualLocation.toString();
   var searchBarController = TextEditingController();
   String? hintText; // = weather!.areaName.toString();
+
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
 
   void refreshCity() async {
     setState(() {
@@ -81,6 +91,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     if (manualLocation != null && manualLocation != 'Loading') {
       newWeather = await wf.currentWeatherByCityName(manualLocation!);
+      forecast = await wf.fiveDayForecastByCityName(manualLocation!);
     }
 
     setState(() {
@@ -98,6 +109,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     newWeather = await wf.currentWeatherByLocation(
+        position.latitude, position.longitude);
+    forecast = await wf.fiveDayForecastByLocation(
         position.latitude, position.longitude);
     // }
 
@@ -195,7 +208,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
               MiddleWidget(
                 weather: weather,
               ),
-              const BottomWidget(),
+              BottomWidget(
+                forecast: forecast,
+              ),
             ],
           ),
         ),

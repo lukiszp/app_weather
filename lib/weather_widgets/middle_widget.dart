@@ -49,7 +49,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 text1: 'Wiatr',
                 // text2: '25 km/h',
                 text2: widget.weather != null
-                    ? '${widget.weather!.windSpeed} m/s'
+                    ? '${(widget.weather!.windSpeed! * 3.6).round()} m/s'
                     : 'Loading',
               ),
               DetailWidget(
@@ -57,7 +57,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 text1: 'Wilgotność',
                 // text2: '80 %',
                 text2: widget.weather != null
-                    ? '${widget.weather!.humidity} %'
+                    ? '${widget.weather!.humidity!.round()} %'
                     : 'Loading',
               ),
               DetailWidget(
@@ -65,7 +65,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 text1: 'Ciśnienie',
                 // text2: '1027 hPa',
                 text2: widget.weather != null
-                    ? widget.weather!.pressure.toString()
+                    ? '${widget.weather!.pressure!.round()} hPa'
                     : 'Loading',
               ),
             ],

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:weather/weather.dart';
 
-class TopWidget extends StatefulWidget {
+// ignore: must_be_immutable
+class TopWidget extends StatelessWidget {
   TopWidget({
     super.key,
     this.weather,
@@ -10,11 +11,6 @@ class TopWidget extends StatefulWidget {
 
   Weather? weather;
 
-  @override
-  State<TopWidget> createState() => _TopWidgetState();
-}
-
-class _TopWidgetState extends State<TopWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -53,8 +49,8 @@ class _TopWidgetState extends State<TopWidget> {
                 children: [
                   GradientText(
                     // '28°',
-                    widget.weather != null
-                        ? '${widget.weather!.temperature.toString()[0]}${widget.weather!.temperature.toString()[1]}${widget.weather!.temperature.toString()[2]}°'
+                    weather != null
+                        ? '${(int.parse(weather!.temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
                         : 'Loading',
                     style: const TextStyle(
                       fontSize: 72,
@@ -78,8 +74,8 @@ class _TopWidgetState extends State<TopWidget> {
                     children: [
                       Text(
                         // 'Reda',
-                        widget.weather != null
-                            ? widget.weather!.areaName.toString()
+                        weather != null
+                            ? weather!.areaName.toString()
                             : 'Loading',
                         style: const TextStyle(
                             fontSize: 24,
@@ -89,8 +85,8 @@ class _TopWidgetState extends State<TopWidget> {
                       const SizedBox(height: 10),
                       Text(
                         // 'Sobota, 11/02/23',
-                        widget.weather != null
-                            ? widget.weather!.date.toString()
+                        weather != null
+                            ? weather!.date.toString().split(' ').first
                             : 'Loading',
                         style: const TextStyle(
                             fontSize: 16,

@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:weather/weather.dart';
 
 class BottomWidget extends StatelessWidget {
-  const BottomWidget({super.key});
+  BottomWidget({super.key, this.forecast});
+
+  List<Weather>? forecast;
+
+  int? firstForecastIndex;
+
+  void findFirstForecastIndex() {
+    forecast![0].date;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +21,14 @@ class BottomWidget extends StatelessWidget {
         children: [
           WeatherFutureOtherDays(
             date: '12/02',
+            // date: widget.forecast![1].date.toString().split(' ').first,
             day: 'NDZ',
             icon:
                 'https://www.pngall.com/wp-content/uploads/11/Weather-PNG-HD-Image.png',
             temperature: '28°',
           ),
+          // temperature:
+          // '${(int.parse(widget.forecast![1].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'),
           WeatherFutureTommorow(
             date: '13/02',
             day: 'PON',
