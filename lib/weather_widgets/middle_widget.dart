@@ -15,7 +15,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
-        borderRadius: const BorderRadius.all(Radius.circular(32)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),

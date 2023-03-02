@@ -74,12 +74,13 @@ class WeatherFutureTommorow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(35)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
         gradient: const LinearGradient(
           colors: [
-            Color.fromARGB(255, 0, 224, 194),
-            Color.fromARGB(255, 0, 184, 194),
-            Color.fromARGB(255, 0, 120, 245),
+            Color.fromARGB(255, 25, 224, 194),
+            // Color.fromARGB(255, 125, 184, 194),
+            Color.fromARGB(255, 25, 160, 224),
+            Color.fromARGB(255, 125, 120, 245),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

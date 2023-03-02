@@ -20,15 +20,18 @@ class TopWidget extends StatelessWidget {
             // color: Colors.red,
             gradient: const LinearGradient(
               colors: [
-                Color.fromARGB(255, 0, 224, 194),
-                Color.fromARGB(255, 0, 160, 224),
-                Color.fromARGB(255, 0, 140, 234),
-                Color.fromARGB(255, 0, 120, 245),
+                Color.fromARGB(255, 95, 224, 194),
+                Color.fromARGB(255, 25, 160, 224),
+                Color.fromARGB(255, 125, 120, 245),
+                // Color.fromARGB(255, 0, 224, 194),
+                // Color.fromARGB(255, 0, 160, 224),
+                // Color.fromARGB(255, 0, 140, 234),
+                // Color.fromARGB(255, 0, 120, 245),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(32)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
@@ -51,7 +54,7 @@ class TopWidget extends StatelessWidget {
                     // '28°',
                     weather != null
                         ? '${(int.parse(weather!.temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
-                        : 'Loading',
+                        : '?°',
                     style: const TextStyle(
                       fontSize: 72,
                       fontWeight: FontWeight.bold,
@@ -75,7 +78,7 @@ class TopWidget extends StatelessWidget {
                       Text(
                         // 'Reda',
                         weather != null
-                            ? weather!.areaName.toString()
+                            ? '${weather!.areaName.toString()}, ${weather!.country.toString()} '
                             : 'Loading',
                         style: const TextStyle(
                             fontSize: 24,
@@ -85,36 +88,48 @@ class TopWidget extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         // 'Sobota, 11/02/23',
+                        // weather != null
+                        //     ? weather!.date.toString().split(' ').first
+                        //     : 'Loading',
                         weather != null
-                            ? weather!.date.toString().split(' ').first
+                            ? weather!.weatherDescription.toString()
+                            // .split(' ')
+                            // .first
                             : 'Loading',
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             // fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                     ],
                   ),
-                  Icon(
-                    Icons.air,
-                    size: 80,
-                    color: Colors.white.withOpacity(0.25),
+                  const SizedBox(
+                    height: 80,
                   ),
+                  // Icon(
+                  //   Icons.air,
+                  //   size: 80,
+                  //   color: Colors.white.withOpacity(0.25),
+                  // ),
                 ],
               ),
             ],
           ),
         ),
         Positioned.fill(
-          left: 32,
-          top: -32,
+          // left: 32,
+          left: 42,
+          top: -20,
           child: Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
+              // width: 200,
+              // height: 250,
+              // child: Image.network(
+              //     'https://freepngimg.com/thumb/categories/2275.png'),
               width: 200,
-              height: 250,
-              child: Image.network(
-                  'https://freepngimg.com/thumb/categories/2275.png'),
+              height: 220,
+              child: Image.asset('lib/resources/icons/cloudy_sun.png'),
             ),
           ),
         ),
