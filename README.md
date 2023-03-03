@@ -16,7 +16,7 @@ Additionally user can write your city or using geolocation for getting own local
 
 ## Screenshot
   <!-- ![image](https://github.com/lukiszp/app_weather/blob/main/weather_app.png?raw=true) -->
-  <p align="center">
+  <p align="left">
   <img src="https://github.com/lukiszp/app_weather/blob/main/weather_app.png?raw=true" width="350" title="weather_app">
   <!-- <img src="your_relative_path_here_number_2_large_name" width="350" alt="accessibility text"> -->
 </p>

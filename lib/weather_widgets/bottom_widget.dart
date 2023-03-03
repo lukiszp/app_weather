@@ -1,15 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
+import 'package:intl/intl.dart';
 
 class BottomWidget extends StatelessWidget {
   BottomWidget({super.key, this.forecast});
 
   List<Weather>? forecast;
+  List<String> weekdays = ['PON', 'WT', 'ŚR', 'CZw', 'PT', 'SOB', 'NDZ'];
 
-  int? firstForecastIndex;
+// get forecast index of tommorow
+  int findFirstForecastIndex() {
+    int now = DateTime.now().weekday + 1;
+    for (int i = 0; i <= 20; i++) {
+      if (forecast![i].date?.weekday == now) {
+        return i;
+      }
+    }
+    return 0;
+  }
 
-  void findFirstForecastIndex() {
-    forecast![0].date;
+  String? getForecastDate(Weather forecast) {
+    NumberFormat dtFormatter = NumberFormat("00");
+    return '${dtFormatter.format(forecast.date?.day).toString()}/${dtFormatter.format(forecast.date?.month).toString()}';
+  }
+
+  String? getForecastDay(Weather forecast) {
+    return '${forecast.date?.day.toString()}/${forecast.date.toString()}';
+  }
+
+  String getWeatherImage(String? weatherIcon) {
+    // if (weatherIcon != null) {
+    return 'lib/resources/icons/$weatherIcon.png';
+    // } else {
+    //   return 'lib/resources/icons/02d.png';
+    // }
+
+    // return Image.asset('lib/resources/icons/cloudy_sun.png');
   }
 
   @override
@@ -19,122 +45,103 @@ class BottomWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          WeatherFutureOtherDays(
-            date: '12/02',
-            // date: widget.forecast![1].date.toString().split(' ').first,
-            day: 'NDZ',
-            icon:
-                'https://www.pngall.com/wp-content/uploads/11/Weather-PNG-HD-Image.png',
-            temperature: '28°',
+          WeatherForecastDay(
+            // date: '12/02',
+            date: forecast != null
+                ? getForecastDate(forecast![findFirstForecastIndex()])
+                    .toString()
+                : '',
+            // day: 'NDZ',
+            day: forecast != null
+                ? weekdays[
+                    (forecast![findFirstForecastIndex()].date?.weekday as int) -
+                        1]
+                : '?',
+            icon: forecast != null
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 12]
+                    .weatherIcon
+                    .toString())
+                : 'lib/resources/icons/02d.png',
+            temperature: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 4].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
+            tempMaxMin: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 2].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 6].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
           ),
-          // temperature:
-          // '${(int.parse(widget.forecast![1].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'),
-          WeatherFutureTommorow(
-            date: '13/02',
-            day: 'PON',
-            icon: 'https://freepngimg.com/thumb/categories/2275.png',
-            temperature: '23°',
+          WeatherForecastDay(
+            // date: '12/02',
+            date: forecast != null
+                ? getForecastDate(forecast![findFirstForecastIndex() + 8])
+                    .toString()
+                : '',
+            day: forecast != null
+                ? weekdays[(forecast![findFirstForecastIndex() + 8]
+                        .date
+                        ?.weekday as int) -
+                    1]
+                : '?',
+            icon: forecast != null
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 12]
+                    .weatherIcon
+                    .toString())
+                : 'lib/resources/icons/02d.png',
+            temperature: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 12].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
+            tempMaxMin: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 10].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 14].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
+            colorType: true,
           ),
-          WeatherFutureOtherDays(
-            date: '14/02',
-            day: 'WT',
-            icon:
-                'https://www.transparentpng.com/thumb/weather/png-photo-weather-hd-9.png',
-            temperature: '31°',
+          WeatherForecastDay(
+            // date: '12/02',
+            date: forecast != null
+                ? getForecastDate(forecast![findFirstForecastIndex() + 16])
+                    .toString()
+                : '',
+            day: forecast != null
+                ? weekdays[(forecast![findFirstForecastIndex() + 16]
+                        .date
+                        ?.weekday as int) -
+                    1]
+                : '?',
+            icon: forecast != null
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 20]
+                    .weatherIcon
+                    .toString())
+                : 'lib/resources/icons/02d.png',
+            temperature: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 22].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
+            tempMaxMin: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 20].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 24].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
           ),
-          WeatherFutureOtherDays(
-            date: '15/02',
-            day: 'ŚR',
-            icon:
-                'https://www.pngall.com/wp-content/uploads/11/Weather-PNG-HD-Image.png',
-            temperature: '33°',
+          WeatherForecastDay(
+            // date: '12/02',
+            date: forecast != null
+                ? getForecastDate(forecast![findFirstForecastIndex() + 24])
+                    .toString()
+                : '',
+            day: forecast != null
+                ? weekdays[(forecast![findFirstForecastIndex() + 24]
+                        .date
+                        ?.weekday as int) -
+                    1]
+                : '?',
+            icon: forecast != null
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 30]
+                    .weatherIcon
+                    .toString())
+                : 'lib/resources/icons/02d.png',
+            temperature: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 30].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
+            tempMaxMin: forecast != null
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 28].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 30].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                : '',
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class WeatherFutureTommorow extends StatelessWidget {
-  WeatherFutureTommorow(
-      {super.key,
-      required this.date,
-      required this.day,
-      required this.icon,
-      required this.temperature,
-      this.indexColor = const Color.fromARGB(255, 212, 199, 6)});
-
-  String day;
-  String date;
-  String icon;
-  String temperature;
-  Color indexColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 25, 224, 194),
-            // Color.fromARGB(255, 125, 184, 194),
-            Color.fromARGB(255, 25, 160, 224),
-            Color.fromARGB(255, 125, 120, 245),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(4, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      width: 70,
-      height: 220,
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
-      // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Column(
-        children: [
-          Text(
-            day,
-            style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            date,
-            style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Image.network(icon),
-          Text(
-            temperature,
-            style: const TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     borderRadius: const BorderRadius.all(Radius.circular(5)),
-          //     color: indexColor,
-          //   ),
-          //   child: const SizedBox(
-          //     width: 35,
-          //     height: 20,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -142,24 +149,51 @@ class WeatherFutureTommorow extends StatelessWidget {
 }
 
 // Dq8%voD-5b
-class WeatherFutureOtherDays extends StatelessWidget {
-  WeatherFutureOtherDays(
+class WeatherForecastDay extends StatelessWidget {
+  WeatherForecastDay(
       {super.key,
       required this.date,
       required this.day,
       required this.icon,
       required this.temperature,
-      this.indexColor = Colors.green});
+      required this.tempMaxMin,
+      this.indexColor = Colors.green,
+      this.colorType = false});
 
   String day;
   String date;
   String icon;
   String temperature;
+  String tempMaxMin;
   Color indexColor;
+  bool colorType;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: colorType == true
+          ? BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 25, 224, 194),
+                  // Color.fromARGB(255, 125, 184, 194),
+                  Color.fromARGB(255, 25, 160, 224),
+                  Color.fromARGB(255, 125, 120, 245),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(4, 4), // changes position of shadow
+                ),
+              ],
+            )
+          : null,
       width: 70,
       height: 220,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
@@ -168,30 +202,49 @@ class WeatherFutureOtherDays extends StatelessWidget {
         children: [
           Text(
             day,
-            style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: colorType == true ? Colors.white : Colors.black),
           ),
           const SizedBox(
             height: 5,
           ),
           Text(
             date,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 68, 68, 68)),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Image.network(icon),
-          Text(
-            temperature,
-            style: const TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                color: colorType == true
+                    ? Colors.white
+                    : const Color.fromARGB(255, 68, 68, 68)),
           ),
           const SizedBox(
             height: 10,
+          ),
+          Image.asset(
+            icon,
+            height: 50,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            temperature,
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: colorType == true ? Colors.white : Colors.black),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            tempMaxMin,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: colorType == true ? Colors.white : Colors.black),
           ),
         ],
       ),

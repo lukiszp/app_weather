@@ -105,8 +105,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               begin: Alignment.bottomLeft,
               end: Alignment.bottomRight,
               colors: <Color>[
-                Color.fromARGB(255, 255, 255, 255),
-                Color.fromARGB(255, 202, 202, 202),
+                Color.fromARGB(255, 235, 233, 233),
+                Color.fromARGB(255, 196, 196, 196),
               ],
               tileMode: TileMode.mirror,
             ),

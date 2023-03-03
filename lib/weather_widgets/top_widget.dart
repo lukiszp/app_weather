@@ -11,6 +11,11 @@ class TopWidget extends StatelessWidget {
 
   Weather? weather;
 
+  String getWeatherImage(String? weatherIcon) {
+    return 'lib/resources/icons/$weatherIcon.png';
+    // return 'lib/resources/icons/01d.png';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -106,11 +111,11 @@ class TopWidget extends StatelessWidget {
                   const SizedBox(
                     height: 80,
                   ),
-                  // Icon(
-                  //   Icons.air,
-                  //   size: 80,
-                  //   color: Colors.white.withOpacity(0.25),
-                  // ),
+                  Icon(
+                    Icons.air,
+                    size: 80,
+                    color: Colors.white.withOpacity(0.25),
+                  ),
                 ],
               ),
             ],
@@ -129,7 +134,16 @@ class TopWidget extends StatelessWidget {
               //     'https://freepngimg.com/thumb/categories/2275.png'),
               width: 200,
               height: 220,
-              child: Image.asset('lib/resources/icons/cloudy_sun.png'),
+              // child: Image.asset('lib/resources/icons/cloudy_sun.png'),
+              child: Image.asset(weather != null
+                  ? getWeatherImage(weather!.weatherIcon)
+                  : 'lib/resources/icons/02d.png'),
+              // child: Image.network(
+              //   weather != null
+              //       ? 'http://openweathermap.org/img/wn/${weather!.weatherIcon.toString()}@2x.png'
+              //       : '?',
+              // style: TextStyle(color: Colors.black),
+              // ),
             ),
           ),
         ),

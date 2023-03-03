@@ -40,6 +40,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   simple_gradient_text: ^1.2.4
   anim_search_bar: ^2.0.3
+  intl: ^0.18.0
   # weather_icons: ^3.0.0
 
 dev_dependencies:

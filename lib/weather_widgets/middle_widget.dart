@@ -27,7 +27,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
       ),
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      padding: const EdgeInsets.fromLTRB(25, 16, 25, 32),
+      padding: const EdgeInsets.fromLTRB(15, 16, 15, 32),
       child: Column(
         children: [
           Row(
@@ -49,7 +49,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 text1: 'Wiatr',
                 // text2: '25 km/h',
                 text2: widget.weather != null
-                    ? '${(widget.weather!.windSpeed! * 3.6).round()} m/s'
+                    ? '${(widget.weather!.windSpeed! * 3.6).round()} km/h'
                     : 'Loading',
               ),
               DetailWidget(
