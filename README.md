@@ -15,4 +15,4 @@ Additionally user can write your city or using geolocation for getting own local
   #### pull_to_refresh: ^2.0.0
 
 ## Screenshot
-  ![alt text](https://github.com/lukiszp/weather_app/blob/main/weather_app.png?raw=true)
+  ![alt text](https://https://github.com/lukiszp/app_weather/blob/main/weather_app.png?raw=true)
