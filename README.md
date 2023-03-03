@@ -1,6 +1,6 @@
 # app_weather
 
-A simple weather application project created in flutter to learn mobile application programming.
+A simple weather application project created in flutter to learn mobile application programming. Not for commercial purpose.
 
 ## Details
 
