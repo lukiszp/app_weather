@@ -25,19 +25,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
   var searchBarController = TextEditingController();
   String? hintText;
 
-  // final RefreshController _refreshController =
-  //     RefreshController(initialRefresh: false);
+  String? currentLocation;
 
-  // void _onRefresh() async {
-  //   // monitor network fetch
-  //   await Future.delayed(const Duration(milliseconds: 1000));
-  //   // if failed,use refreshFailed()
-  //   _refreshController.refreshCompleted();
-  // }
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    await Future.delayed(manualLocation != null
+        ? Duration(milliseconds: 100)
+        : Duration(milliseconds: 3000));
+    refreshCity();
+    _refreshController.refreshCompleted();
+  }
 
   void refreshCity() async {
     setState(() {
       if (manualLocation != null) {
+        currentLocation = manualLocation;
+        _refreshController.requestRefresh();
         getWeatherByCityName();
         // manualLocation = null;
         searchBarController.clear();
@@ -49,7 +54,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
     setState(() {
       searchBarController.clear();
       // weather = null;
+      currentLocation = manualLocation;
       manualLocation = null;
+      _refreshController.requestRefresh();
       getWeatherByLocation();
     });
   }
@@ -65,8 +72,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     Weather? newWeather;
 
     if (manualLocation != null && manualLocation != 'Loading') {
-      newWeather = await wf.currentWeatherByCityName(manualLocation!);
-      forecast = await wf.fiveDayForecastByCityName(manualLocation!);
+      newWeather = await wf.currentWeatherByCityName(currentLocation!);
+      forecast = await wf.fiveDayForecastByCityName(currentLocation!);
     }
 
     setState(() {
@@ -99,94 +106,105 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                Color.fromARGB(255, 235, 233, 233),
-                Color.fromARGB(255, 196, 196, 196),
-              ],
-              tileMode: TileMode.mirror,
-            ),
+        child: SmartRefresher(
+          header: const ClassicHeader(
+            idleText: "Przeciągnij w dół aby odświeżyć",
+            releaseText: "Odśwież",
+            refreshingText: "Wczytywanie",
+            completeText: "Wykonano",
           ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 0,
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  Color.fromARGB(255, 235, 233, 233),
+                  Color.fromARGB(255, 196, 196, 196),
+                ],
+                tileMode: TileMode.mirror,
               ),
-              // SearchWeatherBar(
-              //   weather: weather,
-              // ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(4, 4), // changes position of shadow
-                    ),
-                  ],
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 0,
                 ),
-                margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                // padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const Icon(Icons.search),
-                    SizedBox(
-                      height: 50,
-                      width: 220,
-                      // child: Placeholder(),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 0),
-                          // border: OutlineInputBorder(),
-                          border: InputBorder.none,
-                          hintText: hintText,
-                        ),
-                        controller: searchBarController,
-                        onChanged: (value) {
-                          manualLocation = value.toString();
-                        },
-                        onSubmitted: (value) {
-                          refreshCity();
-                        },
-                        onTap: () {
-                          setState(() {
-                            hintText = "Wpisz lokalizację";
-                          });
-                        },
+                // SearchWeatherBar(
+                //   weather: weather,
+                // ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: const BorderRadius.all(Radius.circular(32)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset:
+                            const Offset(4, 4), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  // padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Icon(Icons.search),
+                      SizedBox(
+                        height: 50,
+                        width: 220,
+                        // child: Placeholder(),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 0),
+                            // border: OutlineInputBorder(),
+                            border: InputBorder.none,
+                            hintText: hintText,
+                          ),
+                          controller: searchBarController,
+                          onChanged: (value) {
+                            manualLocation = value.toString();
+                          },
+                          onSubmitted: (value) {
+                            refreshCity();
+                          },
+                          onTap: () {
+                            setState(() {
+                              hintText = "Wpisz lokalizację";
+                            });
+                          },
 
-                        // onChanged: (value) => _handleTap,
+                          // onChanged: (value) => _handleTap,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: refreshLocation,
-                      // child: null,
-                      icon: const Icon(
-                        Icons.location_on_outlined,
-                        color: Colors.blue,
+                      IconButton(
+                        onPressed: refreshLocation,
+                        // child: null,
+                        icon: const Icon(
+                          Icons.location_on_outlined,
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              TopWidget(
-                weather: weather,
-              ),
-              MiddleWidget(
-                weather: weather,
-              ),
-              BottomWidget(
-                forecast: forecast,
-              ),
-            ],
+                TopWidget(
+                  weather: weather,
+                ),
+                MiddleWidget(
+                  weather: weather,
+                ),
+                BottomWidget(
+                  forecast: forecast,
+                ),
+              ],
+            ),
           ),
         ),
       ),

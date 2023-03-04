@@ -50,7 +50,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 // text2: '25 km/h',
                 text2: widget.weather != null
                     ? '${(widget.weather!.windSpeed! * 3.6).round()} km/h'
-                    : 'Loading',
+                    : '',
               ),
               DetailWidget(
                 widgetIcon: Icons.water_drop,
@@ -58,7 +58,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 // text2: '80 %',
                 text2: widget.weather != null
                     ? '${widget.weather!.humidity!.round()} %'
-                    : 'Loading',
+                    : '',
               ),
               DetailWidget(
                 widgetIcon: Icons.terrain,
@@ -66,7 +66,7 @@ class _MiddleWidgetState extends State<MiddleWidget> {
                 // text2: '1027 hPa',
                 text2: widget.weather != null
                     ? '${widget.weather!.pressure!.round()} hPa'
-                    : 'Loading',
+                    : '',
               ),
             ],
           ),

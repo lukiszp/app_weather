@@ -12,8 +12,8 @@ class TopWidget extends StatelessWidget {
   Weather? weather;
 
   String getWeatherImage(String? weatherIcon) {
-    return 'lib/resources/icons/$weatherIcon.png';
-    // return 'lib/resources/icons/01d.png';
+    return 'lib/resources/weather_icons/$weatherIcon.png';
+    // return 'lib/resources/weather_icons/01d.png';
   }
 
   @override
@@ -59,7 +59,7 @@ class TopWidget extends StatelessWidget {
                     // '28°',
                     weather != null
                         ? '${(int.parse(weather!.temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
-                        : '?°',
+                        : 'Loading',
                     style: const TextStyle(
                       fontSize: 72,
                       fontWeight: FontWeight.bold,
@@ -134,10 +134,10 @@ class TopWidget extends StatelessWidget {
               //     'https://freepngimg.com/thumb/categories/2275.png'),
               width: 200,
               height: 220,
-              // child: Image.asset('lib/resources/icons/cloudy_sun.png'),
+              // child: Image.asset('lib/resources/weather_icons/cloudy_sun.png'),
               child: Image.asset(weather != null
                   ? getWeatherImage(weather!.weatherIcon)
-                  : 'lib/resources/icons/02d.png'),
+                  : 'lib/resources/weather_icons/empty.png'),
               // child: Image.network(
               //   weather != null
               //       ? 'http://openweathermap.org/img/wn/${weather!.weatherIcon.toString()}@2x.png'

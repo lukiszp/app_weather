@@ -30,12 +30,12 @@ class BottomWidget extends StatelessWidget {
 
   String getWeatherImage(String? weatherIcon) {
     // if (weatherIcon != null) {
-    return 'lib/resources/icons/$weatherIcon.png';
+    return 'lib/resources/weather_icons/$weatherIcon.png';
     // } else {
-    //   return 'lib/resources/icons/02d.png';
+    //   return 'lib/resources/weather_icons/02d.png';
     // }
 
-    // return Image.asset('lib/resources/icons/cloudy_sun.png');
+    // return Image.asset('lib/resources/weather_icons/cloudy_sun.png');
   }
 
   @override
@@ -48,7 +48,7 @@ class BottomWidget extends StatelessWidget {
           WeatherForecastDay(
             // date: '12/02',
             date: forecast != null
-                ? getForecastDate(forecast![findFirstForecastIndex()])
+                ? getForecastDate(forecast![findFirstForecastIndex() + 4])
                     .toString()
                 : '',
             // day: 'NDZ',
@@ -56,12 +56,12 @@ class BottomWidget extends StatelessWidget {
                 ? weekdays[
                     (forecast![findFirstForecastIndex()].date?.weekday as int) -
                         1]
-                : '?',
+                : '',
             icon: forecast != null
-                ? getWeatherImage(forecast![findFirstForecastIndex() + 12]
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 4]
                     .weatherIcon
                     .toString())
-                : 'lib/resources/icons/02d.png',
+                : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
                 ? '${(int.parse(forecast![findFirstForecastIndex() + 4].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
                 : '',
@@ -80,12 +80,12 @@ class BottomWidget extends StatelessWidget {
                         .date
                         ?.weekday as int) -
                     1]
-                : '?',
+                : '',
             icon: forecast != null
                 ? getWeatherImage(forecast![findFirstForecastIndex() + 12]
                     .weatherIcon
                     .toString())
-                : 'lib/resources/icons/02d.png',
+                : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
                 ? '${(int.parse(forecast![findFirstForecastIndex() + 12].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
                 : '',
@@ -105,12 +105,12 @@ class BottomWidget extends StatelessWidget {
                         .date
                         ?.weekday as int) -
                     1]
-                : '?',
+                : '',
             icon: forecast != null
                 ? getWeatherImage(forecast![findFirstForecastIndex() + 20]
                     .weatherIcon
                     .toString())
-                : 'lib/resources/icons/02d.png',
+                : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
                 ? '${(int.parse(forecast![findFirstForecastIndex() + 22].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
                 : '',
@@ -129,12 +129,12 @@ class BottomWidget extends StatelessWidget {
                         .date
                         ?.weekday as int) -
                     1]
-                : '?',
+                : '',
             icon: forecast != null
-                ? getWeatherImage(forecast![findFirstForecastIndex() + 30]
+                ? getWeatherImage(forecast![findFirstForecastIndex() + 28]
                     .weatherIcon
                     .toString())
-                : 'lib/resources/icons/02d.png',
+                : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
                 ? '${(int.parse(forecast![findFirstForecastIndex() + 30].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
                 : '',
