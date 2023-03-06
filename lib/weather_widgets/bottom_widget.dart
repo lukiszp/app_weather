@@ -6,17 +6,63 @@ class BottomWidget extends StatelessWidget {
   BottomWidget({super.key, this.forecast});
 
   List<Weather>? forecast;
-  List<String> weekdays = ['PON', 'WT', 'ŚR', 'CZw', 'PT', 'SOB', 'NDZ'];
+  List<String> weekdays = ['PON', 'WT', 'ŚR', 'CZW', 'PT', 'SOB', 'NDZ'];
+
+  RegExp exp = RegExp(r'[^-?0-9]');
 
 // get forecast index of tommorow
   int findFirstForecastIndex() {
-    int now = DateTime.now().weekday + 1;
-    for (int i = 0; i <= 20; i++) {
-      if (forecast![i].date?.weekday == now) {
+    int now = DateTime.now().weekday;
+    int tommorow;
+
+    if (now >= 7) {
+      tommorow = now - 6;
+    } else {
+      tommorow = now + 1;
+    }
+
+    for (int i = 0; i < 20; i++) {
+      if (forecast![i].date?.weekday == tommorow) {
         return i;
       }
     }
-    return 0;
+    return -1;
+  }
+
+  int findTempMax(int firstIndex) {
+    int max = -100;
+    for (int i = firstIndex; i < firstIndex + 7; i++) {
+      int x = (int.parse(forecast![i]
+                  .tempMax
+                  .toString()
+                  .replaceAll(exp, '')
+                  .split(' ')
+                  .first) /
+              10)
+          .round();
+      if (x > max) {
+        max = x;
+      }
+    }
+    return max;
+  }
+
+  int findTempMin(int firstIndex) {
+    int min = 100;
+    for (int i = firstIndex; i < firstIndex + 7; i++) {
+      int x = (int.parse(forecast![i]
+                  .tempMin
+                  .toString()
+                  .replaceAll(exp, '')
+                  .split(' ')
+                  .first) /
+              10)
+          .round();
+      if (x < min) {
+        min = x;
+      }
+    }
+    return min;
   }
 
   String? getForecastDate(Weather forecast) {
@@ -48,7 +94,7 @@ class BottomWidget extends StatelessWidget {
           WeatherForecastDay(
             // date: '12/02',
             date: forecast != null
-                ? getForecastDate(forecast![findFirstForecastIndex() + 4])
+                ? getForecastDate(forecast![findFirstForecastIndex()])
                     .toString()
                 : '',
             // day: 'NDZ',
@@ -63,14 +109,13 @@ class BottomWidget extends StatelessWidget {
                     .toString())
                 : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 4].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 4].temperature.toString().replaceAll(exp, '').split(' ').first) / 10).round()}°'
                 : '',
             tempMaxMin: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 2].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 6].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${findTempMax(findFirstForecastIndex())}°/${findTempMin(findFirstForecastIndex())}°'
                 : '',
           ),
           WeatherForecastDay(
-            // date: '12/02',
             date: forecast != null
                 ? getForecastDate(forecast![findFirstForecastIndex() + 8])
                     .toString()
@@ -87,15 +132,14 @@ class BottomWidget extends StatelessWidget {
                     .toString())
                 : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 12].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 12].temperature.toString().replaceAll(exp, '').split(' ').first) / 10).round()}°'
                 : '',
             tempMaxMin: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 10].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 14].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${findTempMax(findFirstForecastIndex() + 8)}°/${findTempMin(findFirstForecastIndex() + 8)}°'
                 : '',
             colorType: true,
           ),
           WeatherForecastDay(
-            // date: '12/02',
             date: forecast != null
                 ? getForecastDate(forecast![findFirstForecastIndex() + 16])
                     .toString()
@@ -112,14 +156,13 @@ class BottomWidget extends StatelessWidget {
                     .toString())
                 : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 22].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 20].temperature.toString().replaceAll(exp, '').split(' ').first) / 10).round()}°'
                 : '',
             tempMaxMin: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 20].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 24].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${findTempMax(findFirstForecastIndex() + 16)}°/${findTempMin(findFirstForecastIndex() + 16)}°'
                 : '',
           ),
           WeatherForecastDay(
-            // date: '12/02',
             date: forecast != null
                 ? getForecastDate(forecast![findFirstForecastIndex() + 24])
                     .toString()
@@ -136,10 +179,10 @@ class BottomWidget extends StatelessWidget {
                     .toString())
                 : 'lib/resources/weather_icons/empty.png',
             temperature: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 30].temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${(int.parse(forecast![findFirstForecastIndex() + 28].temperature.toString().replaceAll(exp, '').split(' ').first) / 10).round()}°'
                 : '',
             tempMaxMin: forecast != null
-                ? '${(int.parse(forecast![findFirstForecastIndex() + 28].tempMax.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°/${(int.parse(forecast![findFirstForecastIndex() + 30].tempMin.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                ? '${findTempMax(findFirstForecastIndex() + 24)}°/${findTempMin(findFirstForecastIndex() + 24)}°'
                 : '',
           ),
         ],
@@ -195,7 +238,7 @@ class WeatherForecastDay extends StatelessWidget {
             )
           : null,
       width: 70,
-      height: 220,
+      // height: 220,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,

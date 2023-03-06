@@ -22,10 +22,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
   bool locationType = false;
 
   String? manualLocation;
+  String? currentLocation;
+  bool? serviceEnabled;
+
   var searchBarController = TextEditingController();
   String? hintText;
-
-  String? currentLocation;
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -64,8 +65,34 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
     super.initState();
+    // _determinePosition();
+
     getWeatherByLocation();
     // refresh();
+  }
+
+  Future<Position> getPosition() async {
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Get.snackbar('', 'Location Permission Denied');
+
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
   Future<void> getWeatherByCityName() async {
@@ -85,11 +112,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Future<void> getWeatherByLocation() async {
     Weather? newWeather;
 
-    // if (manualLocation != null && manualLocation != 'Loading') {
-    //   newWeather = await wf.currentWeatherByCityName(manualLocation!);
-    // } else {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    // Position position = await Geolocator.getCurrentPosition();
+    Position position = await getPosition();
+
     newWeather = await wf.currentWeatherByLocation(
         position.latitude, position.longitude);
     forecast = await wf.fiveDayForecastByLocation(
@@ -179,13 +204,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               hintText = "Wpisz lokalizację";
                             });
                           },
-
-                          // onChanged: (value) => _handleTap,
                         ),
                       ),
                       IconButton(
                         onPressed: refreshLocation,
-                        // child: null,
                         icon: const Icon(
                           Icons.location_on_outlined,
                           color: Colors.blue,
@@ -194,15 +216,28 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     ],
                   ),
                 ),
-                TopWidget(
-                  weather: weather,
-                ),
-                MiddleWidget(
-                  weather: weather,
-                ),
-                BottomWidget(
-                  forecast: forecast,
-                ),
+                weather != null
+                    ? TopWidget(
+                        weather: weather,
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CircularProgressIndicator(),
+                        ],
+                      ),
+                weather != null
+                    ? MiddleWidget(
+                        weather: weather,
+                      )
+                    : AlertDialog(),
+                weather != null
+                    ? BottomWidget(
+                        forecast: forecast,
+                      )
+                    : AlertDialog(),
               ],
             ),
           ),

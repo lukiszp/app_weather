@@ -32,17 +32,17 @@
     "configurations": [
 
     
-        {
-            "name": "Mi10",
-            "type": "dart",
-            "request": "launch",
-            "deviceId": "35658b73",
-        },
+        // {
+        //     "name": "Mi10",
+        //     "type": "dart",
+        //     "request": "launch",
+        //     "deviceId": "35658b73",
+        // },
         {
             "name": "Mi10_WiFi",
             "type": "dart",
             "request": "launch",
-            "deviceId": "192.168.31.204:40363"
+            "deviceId": "192.168.31.204:43367"
         },
         {
             "name": "Pixel6Pro",
@@ -56,7 +56,7 @@
     "compounds": [
         {
             "name": "All devices",
-            "configurations": ["Mi10", "Pixel6Pro", "Mi10_WiFi"],
+            "configurations": ["Pixel6Pro", "Mi10_WiFi"],
         }
     ]
 

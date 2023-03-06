@@ -11,6 +11,8 @@ class TopWidget extends StatelessWidget {
 
   Weather? weather;
 
+  RegExp exp = RegExp(r'[^-?0-9]');
+
   String getWeatherImage(String? weatherIcon) {
     return 'lib/resources/weather_icons/$weatherIcon.png';
     // return 'lib/resources/weather_icons/01d.png';
@@ -58,7 +60,7 @@ class TopWidget extends StatelessWidget {
                   GradientText(
                     // '28°',
                     weather != null
-                        ? '${(int.parse(weather!.temperature.toString().replaceAll(RegExp(r'[^0-9]'), '').split(' ').first) / 10).round()}°'
+                        ? '${(int.parse(weather!.temperature.toString().replaceAll(exp, '').split(' ').first) / 10).round()}°'
                         : 'Loading',
                     style: const TextStyle(
                       fontSize: 72,
@@ -92,19 +94,11 @@ class TopWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        // 'Sobota, 11/02/23',
-                        // weather != null
-                        //     ? weather!.date.toString().split(' ').first
-                        //     : 'Loading',
                         weather != null
                             ? weather!.weatherDescription.toString()
-                            // .split(' ')
-                            // .first
                             : 'Loading',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            // fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ],
                   ),
@@ -130,20 +124,11 @@ class TopWidget extends StatelessWidget {
             child: SizedBox(
               // width: 200,
               // height: 250,
-              // child: Image.network(
-              //     'https://freepngimg.com/thumb/categories/2275.png'),
               width: 200,
               height: 220,
-              // child: Image.asset('lib/resources/weather_icons/cloudy_sun.png'),
               child: Image.asset(weather != null
                   ? getWeatherImage(weather!.weatherIcon)
                   : 'lib/resources/weather_icons/empty.png'),
-              // child: Image.network(
-              //   weather != null
-              //       ? 'http://openweathermap.org/img/wn/${weather!.weatherIcon.toString()}@2x.png'
-              //       : '?',
-              // style: TextStyle(color: Colors.black),
-              // ),
             ),
           ),
         ),
